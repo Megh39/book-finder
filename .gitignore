@@ -1,0 +1,17 @@
+# data + outputs
+data/
+outputs/
+*.csv
+*.db
+
+# python junk
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
