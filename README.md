@@ -64,18 +64,17 @@ book-finder/
 │       ├── FINAL_MASTER_DATASET.csv
 │       └── FINAL_MASTER_WITH_FINAL_TEXT.csv
 ├── ingestion/
-│   ├── koha_scraper.py           # Playwright scraper for OPAC Koha
-│   ├── openlibrary_enricher.py   # OpenLibrary enrichment pipeline
-│   └── openalex_enricher.py      # OpenAlex enrichment pipeline
+│   ├── opac_data_scraper.py           # Playwright scraper for OPAC Koha
+│   ├── openlibary_data_collector.py   # OpenLibrary enrichment pipeline
+│   └── openalex_data_collector.py      # OpenAlex enrichment pipeline
 ├── transformation/
 │   ├── build_final_dataset.py    # Merge Koha + OpenLibrary + OpenAlex
-│   └── final_text_builder.py     # Builds final_description + final_subjects
+│   └── final_dataset_transformation.py     # Builds final_description + final_subjects
 ├── storage/
 │   ├── db_create.py              # Creates SQLite DB + books table
 │   └── db_books_load.py          # Loads final dataset into SQLite
 ├── logs/
 │   └── llm_usage.md              # LLM usage log (manual Q/A)
-├── outputs/                      # Optional exports
 ├── README.md                     # Documentation
 └── requirements.txt              # Dependencies
 ```
@@ -181,7 +180,7 @@ Merge logic:
 - OpenAlex → join on normalized Title key
 
 ```bash
-python build_final_dataset.py
+python transformation/build_final_dataset.py
 ```
 
 **Output:**

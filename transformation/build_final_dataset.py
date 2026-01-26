@@ -3,13 +3,13 @@ import pandas as pd
 
 
 # ----------------- Paths -----------------
-BASE_CSV = "./data/updated_books_data.csv"
+BASE_CSV = "../data/updated_books_data.csv"
 
-KOHA_CSV = "./data/interim/koha_enriched.csv"
-OPENLIB_CSV = "./data/interim/openlibrary_enriched.csv"
-OPENALEX_CSV = "./data/interim/openalex_enriched.csv"
+KOHA_CSV = "../data/interim/koha_enriched.csv"
+OPENLIB_CSV = "../data/interim/openlibrary_enriched.csv"
+OPENALEX_CSV = "../data/interim/openalex_enriched.csv"
 
-OUT_DIR = "./data/processed"
+OUT_DIR = "../data/processed"
 OUT_FILE = os.path.join(OUT_DIR, "FINAL_MASTER_DATASET.csv")
 
 
