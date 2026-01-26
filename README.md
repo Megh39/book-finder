@@ -1,5 +1,5 @@
 # Book Finder Data Engineering Pipeline
-**Name:** Megh  
+**Name:** Megh Nanavati
 **Roll No:** 202518018
 
 A complete end-to-end data engineering project designed to collect book metadata from multiple sources, clean and transform it into a structured dataset, store it in a local SQLite database, and serve it through a FastAPI API for searching and retrieval.
