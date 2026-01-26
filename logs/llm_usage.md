@@ -1,6 +1,10 @@
-<b>Tool Used Throughout: ChatGPT</b>
+# LLM Usage Log
 
+## Q1
+**Question:** Why can't I scrape data from the opac using BeautifulSoup or Scrapy? 
+**Answer:** This is because OPAC has a security page check, and BeautifulSoup or Scrapy scrape the page that first shows up and there is no delay or wait in that. Playwright solves this problem by opening a browser window which executes Javascript and waits for the page to fully load, and allowing you to bypass the security check. After that page data is scraped using BeautifulSoup.
 
-
-Question 1: Why am I unable to scrape OPAC site with Beautiful soup or Scrapy?
-Answer: Unable to do that because both scrapers scrape on the page that shows up on the link,and opac has a security page which loads up whenever you first visit the site, hence both these are libraries cannot be used.
+---
+## Q2
+**Question:** 
+**Answer:**
