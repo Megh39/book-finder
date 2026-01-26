@@ -3,13 +3,14 @@ import time
 import requests
 import pandas as pd
 from difflib import SequenceMatcher
+from config import UPDATED_BOOKS_CSV,OPENALEX_ENRICHED_CSV
 
 BASE = "https://api.openalex.org"
 HEADERS = {"User-Agent": "Megh-OpenAlex-Enricher/1.0"}
 
 # ---- Input/Output ----
-INPUT_CSV = "../data/updated_books_data.csv"                 # must contain Title
-OUTPUT_CSV = "../data/interim/openalex_enriched.csv"
+INPUT_CSV = UPDATED_BOOKS_CSV              # must contain Title
+OUTPUT_CSV = OPENALEX_ENRICHED_CSV
 
 # ---- Tunables ----
 SAVE_EVERY = 5

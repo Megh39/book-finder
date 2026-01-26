@@ -1,7 +1,7 @@
 import pandas as pd
-
-INPUT_CSV = "../data/raw/books data.csv"
-OUTPUT_CSV = "../data/updated_books_data.csv"
+from config import ORIGINAL_DATA_CSV,UPDATED_BOOKS_CSV
+INPUT_CSV = ORIGINAL_DATA_CSV
+OUTPUT_CSV = UPDATED_BOOKS_CSV
 
 df = pd.read_csv(INPUT_CSV, engine="python", on_bad_lines="skip",encoding="cp1252")
 before = len(df)

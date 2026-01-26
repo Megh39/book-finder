@@ -1,14 +1,14 @@
 import os
 import pandas as pd
-
+from config import UPDATED_BOOKS_CSV,KOHA_ENRICHED_CSV,OPENLIBRARY_ENRICHED_CSV,OPENALEX_ENRICHED_CSV,FINAL_MASTER_DATASET_CSV
 
 # ----------------- Paths -----------------
-BASE_CSV = "../data/updated_books_data.csv"
+BASE_CSV = UPDATED_BOOKS_CSV
 
-KOHA_CSV = "../data/interim/koha_enriched.csv"
-OPENLIB_CSV = "../data/interim/openlibrary_enriched.csv"
-OPENALEX_CSV = "../data/interim/openalex_enriched.csv"
-
+KOHA_CSV = KOHA_ENRICHED_CSV
+OPENLIB_CSV = OPENLIBRARY_ENRICHED_CSV
+OPENALEX_CSV =OPENALEX_ENRICHED_CSV
+OUT_FILE=FINAL_MASTER_DATASET_CSV
 OUT_DIR = "../data/processed"
 OUT_FILE = os.path.join(OUT_DIR, "FINAL_MASTER_DATASET.csv")
 

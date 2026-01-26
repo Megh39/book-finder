@@ -1,6 +1,6 @@
 import sqlite3
-
-DB_FILE = "books.db"
+from config import DB_PATH
+DB_FILE = DB_PATH
 
 conn = sqlite3.connect(DB_FILE)
 cur = conn.cursor()

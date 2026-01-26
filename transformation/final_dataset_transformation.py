@@ -1,9 +1,10 @@
 import pandas as pd
 import re
 import html
+from config import FINAL_MASTER_DATASET_CSV,FINAL_MASTER_WITH_FINAL_TEXT_CSV
 
-INPUT = "../data/processed/FINAL_MASTER_DATASET.csv"
-OUTPUT = "../data/processed/FINAL_MASTER_WITH_FINAL_TEXT.csv"
+INPUT = FINAL_MASTER_DATASET_CSV
+OUTPUT = FINAL_MASTER_WITH_FINAL_TEXT_CSV
 
 BAD_TEXT = {
     "nan",

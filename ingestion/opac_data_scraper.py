@@ -3,6 +3,7 @@ import time
 import pandas as pd
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+from config import UPDATED_BOOKS_CSV,KOHA_ENRICHED_CSV
 
 BASE = "https://opac.daiict.ac.in"
 
@@ -227,8 +228,8 @@ def scrape_one_isbn(page, isbn_norm: str) -> dict:
 
 
 def main():
-    input_csv = "../data/updated_books_data.csv"
-    output_csv = "../data/interim/koha_enriched.csv"
+    input_csv = UPDATED_BOOKS_CSV
+    output_csv = KOHA_ENRICHED_CSV
 
     if not os.path.exists(input_csv):
         raise FileNotFoundError(f"Input file not found: {input_csv}")

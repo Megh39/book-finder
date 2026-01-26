@@ -1,29 +1,39 @@
 import sqlite3
 import pandas as pd
+from config import DB_PATH, FINAL_MASTER_WITH_FINAL_TEXT_CSV
 
-DB_FILE = "books.db"
-CSV_FILE = "../data/processed/FINAL_MASTER_WITH_FINAL_TEXT.csv"
+DB_FILE = DB_PATH
+CSV_FILE = FINAL_MASTER_WITH_FINAL_TEXT_CSV
 
 df = pd.read_csv(CSV_FILE, engine="python", on_bad_lines="skip")
 
 keep = [
-    "row_id", "ISBN", "Title", "Author/Editor", "Year", "Place & Publisher",
-    "final_description", "final_subjects",
-    "final_description_source", "final_subjects_source"
+    "row_id",
+    "ISBN",
+    "Title",
+    "Author/Editor",
+    "Year",
+    "Place & Publisher",
+    "final_description",
+    "final_subjects",
+    "final_description_source",
+    "final_subjects_source",
 ]
 df = df[keep].copy()
 
-df = df.rename(columns={
-    "ISBN": "isbn",
-    "Title": "title",
-    "Author/Editor": "author",
-    "Year": "year",
-    "Place & Publisher": "publisher",
-    "final_description": "description",
-    "final_subjects": "subjects",
-    "final_description_source": "description_source",
-    "final_subjects_source": "subjects_source",
-})
+df = df.rename(
+    columns={
+        "ISBN": "isbn",
+        "Title": "title",
+        "Author/Editor": "author",
+        "Year": "year",
+        "Place & Publisher": "publisher",
+        "final_description": "description",
+        "final_subjects": "subjects",
+        "final_description_source": "description_source",
+        "final_subjects_source": "subjects_source",
+    }
+)
 
 df["row_id"] = pd.to_numeric(df["row_id"], errors="coerce")
 df = df[df["row_id"].notna()].copy()
@@ -63,18 +73,21 @@ ON CONFLICT(row_id) DO UPDATE SET
 rows = 0
 
 for r in df.itertuples(index=False):
-    cur.execute(sql, (
-        r.row_id,
-        r.isbn,
-        r.title,
-        r.author,
-        int(r.year) if pd.notna(r.year) else None,
-        r.publisher,
-        r.description,
-        r.subjects,
-        r.description_source,
-        r.subjects_source
-    ))
+    cur.execute(
+        sql,
+        (
+            r.row_id,
+            r.isbn,
+            r.title,
+            r.author,
+            int(r.year) if pd.notna(r.year) else None,
+            r.publisher,
+            r.description,
+            r.subjects,
+            r.description_source,
+            r.subjects_source,
+        ),
+    )
     rows += 1
 
 conn.commit()

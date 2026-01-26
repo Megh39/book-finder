@@ -1,10 +1,9 @@
 import sqlite3
 from fastapi import FastAPI, HTTPException
 import os
+from config import DB_PATH
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_FILE = os.path.join(BASE_DIR, "storage", "books.db")
-
+DB_FILE=DB_PATH
 app = FastAPI(title="Book Finder API")
 
 

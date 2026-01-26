@@ -2,12 +2,13 @@ import os
 import time
 import requests
 import pandas as pd
+from config import UPDATED_BOOKS_CSV,OPENLIBRARY_ENRICHED_CSV
 
 BASE = "https://openlibrary.org"
 
 # ---- Input/Output ----
-INPUT_CSV = "../data/updated_books_data.csv"          # your cleaned deduped library file
-OUTPUT_CSV = "../data/interim/openlibrary_enriched.csv"
+INPUT_CSV = UPDATED_BOOKS_CSV
+OUTPUT_CSV = OPENLIBRARY_ENRICHED_CSV
 
 # ---- Tunables ----
 SAVE_EVERY = 20

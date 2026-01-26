@@ -55,7 +55,7 @@ book-finder/
 │   └── main.py                   # API endpoints (books, search)
 ├── data/
 │   ├── raw/                      # Raw input files
-│   │   └── books data.csv
+│   │   └── books_data.csv
 │   ├── interim/                  # Enrichment outputs
 │   │   ├── koha_enriched.csv
 │   │   ├── openlibrary_enriched.csv
@@ -116,7 +116,7 @@ playwright install
 
 ## Running the Pipeline
 
-### Step A: Base Cleaning (Dedup)
+### Step A: Base Cleaning (Dedupe)
 Deduplicate base dataset rows by key columns:
 
 ```bash
