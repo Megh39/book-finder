@@ -127,10 +127,12 @@ Run the full pipeline (ingestion → transformation → storage → API):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\run_all.ps1
+```
+
 If execution is blocked, allow local scripts once:
 
 ```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 Linux/macOS (Bash)
