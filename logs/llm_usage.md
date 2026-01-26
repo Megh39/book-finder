@@ -69,15 +69,21 @@
 ## Q12
 **Question:** Some rows are being skipped in Koha scraper when resuming.  
 **Answer:** Add a delay before scraping starts and ensure resume logic only skips rows that are actually “complete”, not rows that failed due to timeout/security checks.
+
 ---
+
 ## Q13
 **Question:** Use AccessionID as a primary key or not?
 **Answer:** No, because AccessionID was unique in the original database and we have removed the duplicate books where either Editions or Titles were removed. Hence a manual row ID was created.
+
 ---
+
 ## Q14
 **Question:** Write a script to scrape data from OPAC (Koha).  
 **Answer:** Provided a Playwright + BeautifulSoup scraper that searches OPAC by ISBN, opens the first result, then extracts subjects + summary from the detail page.
+
 ---
+
 ## Q24
 **Question:** Why should the API not use `DB_FILE = "../storage/books.db"`?  
 **Answer:** Relative paths depend on where the server is started from. Using absolute path based on `__file__` makes it reliable no matter where uvicorn runs.
