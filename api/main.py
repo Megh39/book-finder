@@ -1,6 +1,9 @@
 import sqlite3
 from fastapi import FastAPI, HTTPException
-import os
+import os,sys
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 from config import DB_PATH
 
 DB_FILE=DB_PATH

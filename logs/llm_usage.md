@@ -84,6 +84,20 @@
 
 ---
 
-## Q24
+## Q15
 **Question:** Why should the API not use `DB_FILE = "../storage/books.db"`?  
 **Answer:** Relative paths depend on where the server is started from. Using absolute path based on `__file__` makes it reliable no matter where uvicorn runs.
+
+---
+
+## Q16
+**Question:** Write a script to execute pipeline on windows and ubuntu.
+**Answer:** Provided 2 scripts for execution on windows and Ubuntu.
+
+---
+
+## Q17
+**Question:** Why is my config file not working?
+**Answer:** Added path fix by adding a pointer to root directory so that config file is accessible from anywhere.
+
+---
