@@ -1,4 +1,8 @@
 import pandas as pd
+import sys
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 from config import ORIGINAL_DATA_CSV,UPDATED_BOOKS_CSV
 INPUT_CSV = ORIGINAL_DATA_CSV
 OUTPUT_CSV = UPDATED_BOOKS_CSV

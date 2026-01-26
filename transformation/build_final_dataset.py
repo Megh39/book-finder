@@ -1,5 +1,11 @@
 import os
 import pandas as pd
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
+
 from config import UPDATED_BOOKS_CSV,KOHA_ENRICHED_CSV,OPENLIBRARY_ENRICHED_CSV,OPENALEX_ENRICHED_CSV,FINAL_MASTER_DATASET_CSV
 
 # ----------------- Paths -----------------

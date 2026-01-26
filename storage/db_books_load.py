@@ -1,5 +1,11 @@
 import sqlite3
 import pandas as pd
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
+
 from config import DB_PATH, FINAL_MASTER_WITH_FINAL_TEXT_CSV
 
 DB_FILE = DB_PATH

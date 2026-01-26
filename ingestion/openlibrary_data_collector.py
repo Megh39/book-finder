@@ -3,6 +3,11 @@ import time
 import requests
 import pandas as pd
 from config import UPDATED_BOOKS_CSV,OPENLIBRARY_ENRICHED_CSV
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 
 BASE = "https://openlibrary.org"
 

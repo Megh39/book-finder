@@ -2,6 +2,12 @@ import os
 import time
 import pandas as pd
 from bs4 import BeautifulSoup
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
+
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 from config import UPDATED_BOOKS_CSV,KOHA_ENRICHED_CSV
 

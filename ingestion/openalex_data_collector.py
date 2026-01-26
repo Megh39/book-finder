@@ -4,6 +4,11 @@ import requests
 import pandas as pd
 from difflib import SequenceMatcher
 from config import UPDATED_BOOKS_CSV,OPENALEX_ENRICHED_CSV
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 
 BASE = "https://api.openalex.org"
 HEADERS = {"User-Agent": "Megh-OpenAlex-Enricher/1.0"}
