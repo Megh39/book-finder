@@ -1,6 +1,6 @@
 # Book Finder Data Engineering Pipeline
 **Name:** Megh  
-**Roll No:** <YOUR_ROLL_NO>
+**Roll No:** 202518018
 
 A complete end-to-end data engineering project designed to collect book metadata from multiple sources, clean and transform it into a structured dataset, store it in a local SQLite database, and serve it through a FastAPI API for searching and retrieval.
 
@@ -121,7 +121,7 @@ playwright install
 Deduplicate base dataset rows by key columns:
 
 ```bash
-python transformation/dedupe_base.py
+python ingestion/library_data_cleaner.py
 ```
 
 **Output:**
@@ -137,7 +137,7 @@ Scrapes Koha OPAC using ISBN search and extracts:
 - status
 
 ```bash
-python ingestion/koha_scraper.py
+python ingestion/opac_data_scraper.py
 ```
 
 **Output:**
@@ -152,7 +152,7 @@ Uses multiple OpenLibrary endpoints:
 - `/authors/{author}.json` (author name)
 
 ```bash
-python ingestion/openlibrary_enricher.py
+python ingestion/openlibrary_data_collector.py
 ```
 
 **Output:**
@@ -167,7 +167,7 @@ Since ISBN coverage is limited, OpenAlex enrichment is done using:
 - Status labels for acceptance/rejection
 
 ```bash
-python ingestion/openalex_enricher.py
+python ingestion/openalex_data_collector.py
 ```
 
 **Output:**
@@ -181,7 +181,7 @@ Merge logic:
 - OpenAlex → join on normalized Title key
 
 ```bash
-python transformation/build_final_dataset.py
+python build_final_dataset.py
 ```
 
 **Output:**
@@ -200,7 +200,7 @@ Priority order:
 - Koha OPAC → OpenLibrary → OpenAlex
 
 ```bash
-python transformation/final_text_builder.py
+python transformation/final_dataset_transformation.py
 ```
 
 **Output:**
@@ -313,7 +313,6 @@ All AI-assisted decisions, debugging steps, and pipeline improvements are docume
 Format:
 - Question asked
 - Answer given
-- Fix applied in pipeline
 
 ---
 
@@ -336,7 +335,3 @@ Format:
 
 ## Future Enhancements
 - Add semantic search using embeddings for queries like: “a story about a lonely robot in space”
-- Add Google Books enrichment (optional, needs API key and quota handling)
-- Improve OpenAlex matching using author + year signals
-- Add indexing in SQLite for faster LIKE queries
-- Deploy API using Docker
