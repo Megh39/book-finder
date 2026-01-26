@@ -65,7 +65,7 @@ book-finder/
 │       └── FINAL_MASTER_WITH_FINAL_TEXT.csv
 ├── ingestion/
 │   ├── opac_data_scraper.py           # Playwright scraper for OPAC Koha
-│   ├── openlibary_data_collector.py   # OpenLibrary enrichment pipeline
+│   ├── openlibrary_data_collector.py   # OpenLibrary enrichment pipeline
 │   └── openalex_data_collector.py      # OpenAlex enrichment pipeline
 ├── transformation/
 │   ├── build_final_dataset.py    # Merge Koha + OpenLibrary + OpenAlex
@@ -73,8 +73,12 @@ book-finder/
 ├── storage/
 │   ├── db_create.py              # Creates SQLite DB + books table
 │   └── db_books_load.py          # Loads final dataset into SQLite
+│   └──books.db                   # SQLite DB containing all books data
 ├── logs/
 │   └── llm_usage.md              # LLM usage log (manual Q/A)
+├── config.py                          # Centralized file paths + constants
+├── run_all.ps1                        # Run full pipeline (Windows)
+├── run_all.sh                         # Run full pipeline (Linux/macOS)
 ├── README.md                     # Documentation
 └── requirements.txt              # Dependencies
 ```
@@ -115,6 +119,28 @@ playwright install
 ---
 
 ## Running the Pipeline
+
+### Run Full Pipeline Automatically
+
+### Windows (PowerShell)
+Run the full pipeline (ingestion → transformation → storage → API):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run_all.ps1
+If execution is blocked, allow local scripts once:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+Linux/macOS (Bash)
+
+Make the script executable and run it:
+
+```bash
+chmod +x run_all.sh
+./run_all.sh
+```
 
 ### Step A: Base Cleaning (Dedupe)
 Deduplicate base dataset rows by key columns:
