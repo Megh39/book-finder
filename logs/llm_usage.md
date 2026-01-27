@@ -101,3 +101,14 @@
 **Answer:** Added path fix by adding a pointer to root directory so that config file is accessible from anywhere.
 
 ---
+## Q18 
+**Question:** Write a script to call API of openlibrary.
+**Answer**: Script which goes through multiple endpoints(work,edition) and provides final output.
+
+---
+
+## Q19
+**Question:** Write a script to call API of Openalex.
+**Answer:** Script which goes through OpenAlex data and returns results based on title similarity.
+
+---
