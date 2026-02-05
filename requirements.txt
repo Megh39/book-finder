@@ -5,3 +5,6 @@ numpy
 requests
 beautifulsoup4
 playwright
+sentence_transformers
+torch
+rank-bm25

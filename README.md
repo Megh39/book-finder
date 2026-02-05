@@ -1,364 +1,268 @@
-# Book Finder Data Engineering Pipeline
-**Name:** Megh Nanavati
-**Roll No:** 202518018
+BOOK FINDER – DATA ENGINEERING PIPELINE
+======================================
 
-A complete end-to-end data engineering project designed to collect book metadata from multiple sources, clean and transform it into a structured dataset, store it in a local SQLite database, and serve it through a FastAPI API for searching and retrieval.
+Name: Megh Nanavati
+Roll No: 202518018
 
-This project is built to run on **Windows**, **Linux (Ubuntu)**, and **macOS**, using Python scripts and a modular pipeline approach.
 
----
+PROJECT OVERVIEW
+----------------
+This project implements a complete end-to-end data engineering pipeline
+to collect, enrich, clean, store, and serve book metadata from multiple
+heterogeneous sources.
 
-## Features
-- **Multi-Source Enrichment**
-  - **Koha OPAC (DAIICT)** scraping using **Playwright** (handles security checks better than basic scrapers).
-  - **OpenLibrary API** enrichment using multiple endpoints (Edition → Work → Author).
-  - **OpenAlex API** enrichment using title-based search and similarity scoring.
-- **Data Transformation**
-  - Cleans descriptions and subjects.
-  - Removes HTML noise and encoding artifacts.
-  - Picks best final description/subjects across sources.
-- **Persistent Storage**
-  - Stores final processed dataset in a local **SQLite** database (`books.db`).
-- **FastAPI Access**
-  - REST API endpoints for searching by title, author, ISBN, subjects, description, and full-text match.
-- **Resume-Safe Scraping**
-  - Scripts save checkpoints and resume from the last completed state to avoid losing progress.
+The pipeline integrates:
+- Web scraping (Koha OPAC)
+- Public APIs (OpenLibrary, OpenAlex)
+- Data cleaning and transformation logic
+- Relational storage (SQLite)
+- REST-based access using FastAPI
 
----
+The system is designed to be reproducible, modular, and runnable from
+the repository root without manual path manipulation.
 
-## Pipeline Execution Flow
-The project is structured into four main stages:
 
-- **Ingestion**
-  - Load base dataset (CSV of books).
-  - Enrich using Koha OPAC scraping (ISBN search).
-  - Enrich using OpenLibrary API (ISBN → edition/work/author).
-  - Enrich using OpenAlex API (title search + similarity filtering).
+KEY FEATURES
+------------
+1. Multi-Source Data Enrichment
+   - Koha OPAC (DAIICT) scraping using Playwright
+   - OpenLibrary API enrichment using:
+       ISBN → Edition → Work → Author hierarchy
+   - OpenAlex API enrichment using:
+       Title-based search and similarity filtering
 
-- **Transformation**
-  - Merge all sources into a master dataset.
-  - Clean and normalize text fields.
-  - Create final fields (`final_description`, `final_subjects`) with source tracking.
+2. Robust Data Transformation
+   - HTML tag and noise removal
+   - Encoding artifact correction (â€™, â€, etc.)
+   - Normalization of subjects and descriptions
+   - Selection of best description/subjects using
+     a priority-based source ranking
 
-- **Storage**
-  - Load cleaned dataset into SQLite database (`books.db`).
+3. Persistent Local Storage
+   - Final cleaned dataset stored in SQLite (books.db)
+   - Schema designed for efficient search and retrieval
 
-- **Serving**
-  - FastAPI app serves the stored data for queries/search.
+4. FastAPI-Based Query Interface
+   - REST endpoints for title, author, ISBN, subject,
+     description, and combined search
+   - Swagger UI for interactive exploration
 
----
+5. Resume-Safe Scraping
+   - Intermediate outputs stored at each stage
+   - Scripts detect completed rows and resume execution
+     without duplicating work
 
-## Project Structure
-```text
+
+PIPELINE EXECUTION FLOW
+-----------------------
+The pipeline is organized into four logical stages:
+
+1. Ingestion
+   - Load base dataset (CSV)
+   - Enrich using Koha OPAC scraping
+   - Enrich using OpenLibrary API
+   - Enrich using OpenAlex API
+
+2. Transformation
+   - Merge all enriched datasets
+   - Clean and normalize text fields
+   - Construct final_description and final_subjects
+     along with source metadata
+
+3. Storage
+   - Create SQLite database and schema
+   - Load final dataset into database
+
+4. Serving
+   - Expose stored data via FastAPI endpoints
+
+
+PROJECT STRUCTURE
+-----------------
 book-finder/
-├── api/                          # FastAPI server
-│   └── main.py                   # API endpoints (books, search)
+│
+├── src/
+│   ├── __init__.py
+│   ├── config.py                  # Centralized paths and constants
+│   │
+│   ├── ingestion/
+│   │   ├── __init__.py
+│   │   ├── opac_data_scraper.py
+│   │   ├── openlibrary_data_collector.py
+│   │   └── openalex_data_collector.py
+│   │
+│   ├── transformation/
+│   │   ├── __init__.py
+│   │   ├── build_final_dataset.py
+│   │   └── final_dataset_transformation.py
+│   │
+│   ├── storage/
+│   │   ├── __init__.py
+│   │   ├── db_create.py
+│   │   └── db_books_load.py
+│   │
+│   └── api/
+│       ├── __init__.py
+│       └── main.py                # FastAPI application
+│
 ├── data/
-│   ├── raw/                      # Raw input files
+│   ├── raw/
 │   │   └── books_data.csv
-│   ├── interim/                  # Enrichment outputs
+│   ├── interim/
 │   │   ├── koha_enriched.csv
 │   │   ├── openlibrary_enriched.csv
 │   │   └── openalex_enriched.csv
-│   └── processed/                # Final merged datasets
+│   └── processed/
 │       ├── FINAL_MASTER_DATASET.csv
 │       └── FINAL_MASTER_WITH_FINAL_TEXT.csv
-├── ingestion/
-│   ├── opac_data_scraper.py           # Playwright scraper for OPAC Koha
-│   ├── openlibrary_data_collector.py   # OpenLibrary enrichment pipeline
-│   └── openalex_data_collector.py      # OpenAlex enrichment pipeline
-├── transformation/
-│   ├── build_final_dataset.py    # Merge Koha + OpenLibrary + OpenAlex
-│   └── final_dataset_transformation.py     # Builds final_description + final_subjects
+│
 ├── storage/
-│   ├── db_create.py              # Creates SQLite DB + books table
-│   └── db_books_load.py          # Loads final dataset into SQLite
-│   └──books.db                   # SQLite DB containing all books data
+│   └── books.db                   # SQLite database
+│
 ├── logs/
-│   └── llm_usage.md              # LLM usage log (manual Q/A)
-├── config.py                          # Centralized file paths + constants
-├── run_all.ps1                        # Run full pipeline (Windows)
-├── run_all.sh                         # Run full pipeline (Linux/macOS)
-├── README.md                     # Documentation
-└── requirements.txt              # Dependencies
-```
+│   └── llm_usage.md
+│
+├── run_all.ps1
+├── run_all.sh
+├── requirements.txt
+└── README.txt
 
----
 
-## Installation & Setup
+INSTALLATION & SETUP
+--------------------
+Prerequisites:
+- Python 3.10 or higher
+- Internet access
+- Chromium browser (installed by Playwright)
 
-### 1. Prerequisites
-- **Python 3.10+**
-- Internet access (for OpenLibrary/OpenAlex + Koha OPAC scraping)
-- Chromium browser (Playwright installs it automatically)
+Virtual environment setup:
 
-### 2. Create Virtual Environment
+Windows:
+python -m venv .venv
+.\\.venv\\Scripts\\Activate.ps1
 
-#### Windows
-```bash
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-```
+Linux/macOS:
+python3 -m venv .venv
+source .venv/bin/activate
 
-#### Linux/macOS
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-```bash
+Install dependencies:
 pip install -r requirements.txt
-```
 
-### 4. Install Playwright Browsers
-```bash
-playwright install
-```
+Install Playwright browser:
+playwright install chromium
 
----
 
-## Running the Pipeline
+RUNNING THE PIPELINE
+-------------------
+IMPORTANT:
+All commands must be executed from the repository root.
+Scripts are executed as Python modules, not as standalone files.
 
-### Run Full Pipeline Automatically
+Automated execution:
 
-### Windows (PowerShell)
-Run the full pipeline (ingestion → transformation → storage → API):
+Windows:
+powershell -ExecutionPolicy Bypass -File .\\run_all.ps1
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\run_all.ps1
-```
-
-If execution is blocked, allow local scripts once:
-
-```powershell
- Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
-
-Linux/macOS (Bash)
-
-Make the script executable and run it:
-
-```bash
+Linux/macOS:
 chmod +x run_all.sh
 ./run_all.sh
-```
 
-### Step A: Base Cleaning (Dedupe)
-Deduplicate base dataset rows by key columns:
 
-```bash
-python ingestion/library_data_cleaner.py
-```
+MANUAL PIPELINE STEPS
+--------------------
 
-**Output:**
-- `data/updated_books_data.csv`
+Base dataset cleaning:
+python -m src.ingestion.library_data_cleaner
 
----
+Koha OPAC enrichment:
+python -m src.ingestion.opac_data_scraper
 
-### Step B: Koha OPAC Enrichment (Playwright Scraper)
-Scrapes Koha OPAC using ISBN search and extracts:
-- subjects
-- summary/description
-- detail page link
-- status
+OpenLibrary enrichment:
+python -m src.ingestion.openlibrary_data_collector
 
-```bash
-python ingestion/opac_data_scraper.py
-```
+OpenAlex enrichment:
+python -m src.ingestion.openalex_data_collector
 
-**Output:**
-- `data/interim/koha_enriched.csv`
+Merge datasets:
+python -m src.transformation.build_final_dataset
 
----
+Final text construction:
+python -m src.transformation.final_dataset_transformation
 
-### Step C: OpenLibrary Enrichment (API)
-Uses multiple OpenLibrary endpoints:
-- `/isbn/{isbn}.json` (edition)
-- `/works/{work}.json` (subjects + description fallback)
-- `/authors/{author}.json` (author name)
+Create database:
+python -m src.storage.db_create
 
-```bash
-python ingestion/openlibrary_data_collector.py
-```
+Load database:
+python -m src.storage.db_books_load
 
-**Output:**
-- `data/interim/openlibrary_enriched.csv`
+Dataset statistics:
+python -m src.analysis.dataset_stats
 
----
+RUNNING THE API
+---------------
+python -m uvicorn src.api.main:app --reload
 
-### Step D: OpenAlex Enrichment (Title Search)
-Since ISBN coverage is limited, OpenAlex enrichment is done using:
-- Title search
-- Similarity matching
-- Status labels for acceptance/rejection
+Swagger UI:
+http://127.0.0.1:8000/docs
 
-```bash
-python ingestion/openalex_data_collector.py
-```
 
-**Output:**
-- `data/interim/openalex_enriched.csv`
+DATABASE SCHEMA (books table)
+-----------------------------
+row_id               INTEGER (Primary Key)
+isbn                 TEXT
+title                TEXT
+author               TEXT
+year                 INTEGER
+publisher             TEXT
+description           TEXT
+subjects              TEXT
+description_source    TEXT
+subjects_source       TEXT
 
----
 
-### Step E: Merge All Sources
-Merge logic:
-- Koha + OpenLibrary → join on ISBN
-- OpenAlex → join on normalized Title key
+DATA TRANSFORMATION LOGIC
+------------------------
+Description Cleaning:
+- HTML tag removal
+- Encoding artifact correction
+- Removal of placeholder text
+- Preference-based source selection
 
-```bash
-python transformation/build_final_dataset.py
-```
+Subject Cleaning:
+- Semicolon-separated normalization
+- Best non-empty source selected
 
-**Output:**
-- `data/processed/FINAL_MASTER_DATASET.csv`
+Year Cleaning:
+- Valid years restricted to 1800–2026
+- Invalid values set to NULL
 
----
 
-### Step F: Create Final Text Fields
-Creates:
-- `final_description`
-- `final_subjects`
-- `description_source`
-- `subjects_source`
+WHY PLAYWRIGHT WAS USED
+----------------------
+Koha OPAC employs dynamic rendering and bot-detection mechanisms.
+Traditional HTTP-based scrapers often fail or are blocked.
 
-Priority order:
-- Koha OPAC → OpenLibrary → OpenAlex
+Playwright executes a real browser session, allowing:
+- JavaScript-rendered content access
+- Page interaction
+- Manual verification when required
 
-```bash
-python transformation/final_dataset_transformation.py
-```
 
-**Output:**
-- `data/processed/FINAL_MASTER_WITH_FINAL_TEXT.csv`
+LLM USAGE DISCLOSURE
+--------------------
+AI tools were used for:
+- Debugging assistance
+- Architectural reasoning
+- Code review and refactoring suggestions
 
----
+All AI-assisted interactions are documented in:
+logs/llm_usage.md
 
-### Step G: Create Database + Load Data
 
-Create DB + table:
-```bash
-python storage/db_create.py
-```
-
-Load final CSV into SQLite:
-```bash
-python storage/db_books_load.py
-```
-
-**Database:**
-- `storage/books.db`
-
----
-
-### Step H: Run FastAPI Server
-```bash
-uvicorn api.main:app --reload
-```
-
----
-
-## API Documentation
-Once server is running:
-- Swagger docs: `http://127.0.0.1:8000/docs`
-
-### Available Endpoints
-
-| Endpoint | Method | Description |
-| :--- | :--- | :--- |
-| `/` | GET | Welcome message |
-| `/health` | GET | API health check |
-| `/books` | GET | List books (limit controlled) |
-| `/books/{row_id}` | GET | Get book by row_id |
-| `/search/title?q=` | GET | Search by title |
-| `/search/author?q=` | GET | Search by author |
-| `/search/isbn?q=` | GET | Exact ISBN search |
-| `/search/subjects?q=` | GET | Search by subjects |
-| `/search/description?q=` | GET | Search by description |
-| `/search/all?q=` | GET | Search across title/author/subjects/description |
-
----
-
-## Data Dictionary (Books Table)
-
-| Field | SQLite Type | Description |
-| :--- | :--- | :--- |
-| `row_id` | INTEGER | Primary key row identifier |
-| `isbn` | TEXT | Book ISBN (normalized) |
-| `title` | TEXT | Book title |
-| `author` | TEXT | Author/Editor field |
-| `year` | INTEGER | Publication year (cleaned range) |
-| `publisher` | TEXT | Place & Publisher |
-| `description` | TEXT | Final chosen description |
-| `subjects` | TEXT | Final chosen subjects/tags |
-| `description_source` | TEXT | Source label: `koha_opac`, `openlibrary`, `openalex` |
-| `subjects_source` | TEXT | Source label: `koha_opac`, `openlibrary`, `openalex` |
-
----
-
-## Data Transformation Logic
-
-### Description Cleaning
-- Removes HTML tags and `<br>`
-- Fixes encoding artifacts like:
-  - `â€™` → `'`
-  - `â€”` → `-`
-- Removes spam text like “Table of contents”
-- Filters invalid placeholder descriptions (`nan`, `none`, `not available`)
-
-### Subject Cleaning
-- Uses semicolon-separated subjects/tags
-- Picks best non-empty source field
-
-### Year Cleaning
-Some rows had invalid years like `0` or `2090`.
-
-Fix applied:
-- Keep only years between **1800 and 2026**
-- Otherwise set year to `NULL`
-
----
-
-## Why Playwright Was Needed for Koha OPAC
-Koha OPAC sometimes shows:
-- security check pages
-- bot detection
-- blocked requests
-
-BeautifulSoup/Scrapy cannot solve that reliably because they only fetch static HTML without waiting or interacting.
-
-Playwright works because it runs a real browser session and can handle manual verification when needed.
-
----
-
-## LLM Usage Log
-All AI-assisted decisions, debugging steps, and pipeline improvements are documented in:
-
-- `logs/llm_usage.md`
-
-Format:
-- Question asked
-- Answer given
-
----
-
-## Common Issues & Fixes
-
-### 1. Koha duplicates in output
-**Cause:** multiple retries / manual reruns appended results  
-**Fix:** dedupe based on ISBN or keep best row per ISBN during merge
-
-### 2. OpenAlex mismatch when merging on row_id
-**Cause:** base dataset did not have stable row_id  
-**Fix:** merge OpenAlex using normalized title match instead
-
-### 3. Resume scraping without losing progress
-**Fix:**
-- scripts store checkpoints every N rows
-- scripts read existing output and skip completed rows
-
----
-
-## Future Enhancements
-- Add semantic search using embeddings for queries like: “a story about a lonely robot in space”
+FUTURE ENHANCEMENTS
+-------------------
+- Semantic search using embeddings
+- Natural language queries such as:
+  "a story about a lonely robot in space"
+- Migration to PostgreSQL for scalability
+- CI checks for pipeline integrity

@@ -112,3 +112,41 @@
 **Answer:** Script which goes through OpenAlex data and returns results based on title similarity.
 
 ---
+
+## Q20
+**Question:** What would be good options for retrieving books based on a given query.
+**Answer:** Best option would be to use sentence transformers, as they are built for this exact task. 
+
+---
+
+## Q21
+**Question:** Other options than transformers?
+**Answer:** Other options exist such as Local LLMs. But they produce different results each time and hard to evaluate. Other text embedding options such as TF-IDF and word2vec exist but not too good for text matching, they work only for tokenization.
+
+---
+
+## Q
+**Question:** 
+**Answer:** 
+
+---
+## Q
+**Question:** 
+**Answer:** 
+
+---
+## Q
+**Question:** 
+**Answer:** 
+
+---
+## Q
+**Question:** 
+**Answer:** 
+
+---
+## Q
+**Question:** 
+**Answer:** 
+
+---

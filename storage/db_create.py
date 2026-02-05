@@ -1,11 +1,7 @@
 import sqlite3
 import sys
-from pathlib import Path
+from src.config import DB_PATH
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(BASE_DIR))
-
-from config import DB_PATH
 DB_FILE = DB_PATH
 
 conn = sqlite3.connect(DB_FILE)
