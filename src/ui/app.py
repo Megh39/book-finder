@@ -64,7 +64,18 @@ if st.button("Recommend"):
         else:
             st.subheader("Recommended Books")
             for i, r in enumerate(results, 1):
-                st.markdown(
-                    f"**{i}. {r['title']}**  \n"
-                    f"*{r['author']} ({r['year']})*"
-                )
+                with st.expander(f"{i}. {r['title']} — {r['author']} ({r['year']})"):
+                    st.markdown(f"**Title:** {r['title']}")
+                    st.markdown(f"**Author:** {r['author']}")
+                    st.markdown(f"**Year:** {r['year']}")
+                    st.markdown(f"**ISBN:** {r.get('isbn', 'N/A')}")
+                    st.markdown(f"**Publisher:** {r.get('publisher', 'N/A')}")
+
+                    if r.get("subjects"):
+                        st.markdown("**Subjects:**")
+                        st.write(r["subjects"])
+
+                    if r.get("description"):
+                        st.markdown("**Description:**")
+                        st.write(r["description"])
+

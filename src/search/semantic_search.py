@@ -17,6 +17,7 @@ ROW_IDS_FILE = Path("book_row_ids.npy")
 TOP_K = 5
 BM25_CANDIDATES = 200
 
+
 # -------------------------------
 # DB LOAD
 # -------------------------------
@@ -27,11 +28,22 @@ def load_books_from_db():
     conn = sqlite3.connect(str(DB_PATH))
     cur = conn.cursor()
 
-    cur.execute("""
-        SELECT row_id, title, author, year, description, subjects
-        FROM books
-        WHERE description IS NOT NULL
-    """)
+    cur.execute(
+        """
+       SELECT
+    row_id,
+    isbn,
+    title,
+    author,
+    year,
+    publisher,
+    description,
+    subjects
+FROM books
+WHERE description IS NOT NULL
+
+    """
+    )
 
     rows = cur.fetchall()
     conn.close()
@@ -46,13 +58,17 @@ def load_books_from_db():
 # EMBEDDING GENERATION
 # -------------------------------
 def build_search_text(row):
-    _, title, author, _, description, subjects = row
+    _, _, title, author, _, _, description, subjects = row
 
     parts = []
-    if title: parts.append(title)
-    if description: parts.append(description)
-    if subjects: parts.append(subjects)
-    if author: parts.append(author)
+    if title:
+        parts.append(title)
+    if description:
+        parts.append(description)
+    if subjects:
+        parts.append(subjects)
+    if author:
+        parts.append(author)
 
     return " ".join(parts)
 
@@ -123,16 +139,18 @@ class SemanticSearchEngine:
 
         self.row_id_to_meta = {
             r[0]: {
-                "title": r[1],
-                "author": r[2],
-                "year": r[3],
+                "isbn": r[1],
+                "title": r[2],
+                "author": r[3],
+                "year": r[4],
+                "publisher": r[5],
+                "description": r[6],
+                "subjects": r[7],
             }
             for r in rows
         }
 
-        self.row_id_to_emb_idx = {
-            rid: i for i, rid in enumerate(emb_row_ids)
-        }
+        self.row_id_to_emb_idx = {rid: i for i, rid in enumerate(emb_row_ids)}
 
         self.bm25, self.bm25_row_ids = build_bm25_index(rows)
 
@@ -190,13 +208,19 @@ class SemanticSearchEngine:
 
             score = scores[rank] if direct_scores else scores[idx]
 
-            results.append({
-                "row_id": rid,
-                "title": meta["title"],
-                "author": meta["author"],
-                "year": meta["year"],
-                "score": float(score),
-            })
+            results.append(
+                {
+                    "row_id": rid,
+                    "isbn": meta["isbn"],
+                    "title": meta["title"],
+                    "author": meta["author"],
+                    "year": meta["year"],
+                    "publisher": meta["publisher"],
+                    "description": meta["description"],
+                    "subjects": meta["subjects"],
+                    "score": float(score),
+                }
+            )
 
         return results
 
