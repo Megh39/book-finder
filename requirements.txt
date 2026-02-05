@@ -8,3 +8,4 @@ playwright
 sentence_transformers
 torch
 rank-bm25
+streamlit
