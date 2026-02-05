@@ -1,5 +1,10 @@
 import streamlit as st
+import sys
+from pathlib import Path
 
+# Add repo root to PYTHONPATH
+ROOT_DIR = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT_DIR))
 from src.search.semantic_search import (
     load_books_from_db,
     load_or_build_embeddings,
