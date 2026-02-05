@@ -1,11 +1,20 @@
 import sqlite3
-from fastapi import FastAPI, HTTPException
-from pathlib import Path
+from fastapi import FastAPI, HTTPException, Query
 from src.config import DB_PATH
 from fastapi.middleware.cors import CORSMiddleware
 
-DB_FILE=DB_PATH
+DB_FILE = DB_PATH
 app = FastAPI(title="Book Finder API")
+from src.search.semantic_search import (
+    load_books_from_db,
+    load_or_build_embeddings,
+    SemanticSearchEngine,
+)
+
+rows = load_books_from_db()
+embeddings, emb_row_ids = load_or_build_embeddings(rows)
+search_engine = SemanticSearchEngine(rows, embeddings, emb_row_ids)
+
 
 @app.on_event("startup")
 def validate_db():
@@ -16,17 +25,37 @@ def validate_db():
         raise RuntimeError("Missing books table")
     conn.close()
 
+
 def get_conn():
     conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.get("/")
 def welcome():
-    return {"message":"Welcome to Book Finder API! Please visit /docs for more info."}
+    return {"message": "Welcome to Book Finder API! Please visit /docs for more info."}
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/search/semantic")
+def semantic_search(
+    q: str = Query(..., min_length=1),
+    top_k: int = Query(5, ge=1, le=20),
+):
+    return search_engine.embedding_only_search(q, top_k=top_k)
+
+
+@app.get("/search/hybrid")
+def hybrid_search(
+    q: str = Query(..., min_length=1),
+    top_k: int = Query(5, ge=1, le=20),
+):
+    return search_engine.hybrid_search(q, top_k=top_k)
 
 
 @app.get("/books")
@@ -133,6 +162,7 @@ def search_by_isbn(q: str):
         raise HTTPException(status_code=404, detail="book not found")
     return dict(row)
 
+
 @app.get("/search/subjects")
 def search_by_subjects(q: str, limit: int = 50):
     conn = get_conn()
@@ -152,6 +182,7 @@ def search_by_subjects(q: str, limit: int = 50):
     if not rows:
         raise HTTPException(status_code=404, detail="book not found")
     return [dict(r) for r in rows]
+
 
 @app.get("/search/description")
 def search_by_description(q: str, limit: int = 50):
@@ -173,13 +204,15 @@ def search_by_description(q: str, limit: int = 50):
         raise HTTPException(status_code=404, detail="book not found")
     return [dict(r) for r in rows]
 
+
 @app.get("/search/all")
 def search_everywhere(q: str, limit: int = 50):
     conn = get_conn()
     cur = conn.cursor()
 
     like = f"%{q}%"
-    cur.execute("""
+    cur.execute(
+        """
         SELECT row_id, isbn, title, author, year, publisher,
                description, subjects
         FROM books
@@ -188,13 +221,16 @@ def search_everywhere(q: str, limit: int = 50):
            OR subjects LIKE ?
            OR description LIKE ?
         LIMIT ?
-    """, (like, like, like, like, limit))
+    """,
+        (like, like, like, like, limit),
+    )
 
     rows = cur.fetchall()
     conn.close()
     if not rows:
         raise HTTPException(status_code=404, detail="book not found")
     return [dict(r) for r in rows]
+
 
 app.add_middleware(
     CORSMiddleware,
