@@ -6,6 +6,7 @@ BOOK FINDER – DATA ENGINEERING PIPELINE
 - Live Site Link: https://book-finder-dau.streamlit.app/
 
 ![Streamlit Book Finder UI](assets/streamlit_app.png)
+
 Figure: Streamlit-based interface for semantic and hybrid book search.
 
 PROJECT OVERVIEW
@@ -104,7 +105,7 @@ book-finder/
 │   │   └── final_dataset_transformation.py
 │   │
 │   ├── analysis/                  # Dataset analysis and statistics scripts
-│   │   └── __init__.py
+│   │   ├── __init__.py
 │   │   └── dataset_stats.py
 │   │
 │   ├── search/                    # Semantic + lexical search engine
@@ -112,13 +113,13 @@ book-finder/
 │   │   └── semantic_search.py
 │   │
 │   ├── api/                       # Backend logic (non-deployed, local)
-│   │   └── __init__.py
+│   │   ├── __init__.py
 │   │   └── main.py
 │   │
 │   └── ui/                        # Streamlit UI
-│   │   └── __init__.py
-│   │   └── app.py
-│   │   └── requirements.txt
+│       ├── __init__.py
+│       ├── app.py
+│       └── requirements.txt
 │
 ├── data/
 │   ├── raw/
@@ -132,9 +133,10 @@ book-finder/
 │       └── FINAL_MASTER_WITH_FINAL_TEXT.csv
 │
 ├── storage/
-│   └── books.db                   # SQLite database
-│   └── db_books_load.py
+│   ├── books.db                   # SQLite database
+│   ├── db_books_load.py
 │   └── db_create.py
+│
 ├── logs/
 │   └── llm_usage.md
 │
@@ -331,39 +333,37 @@ These constraints are acceptable for academic and demonstration use.
 DATABASE OVERVIEW SUMMARY
 ==========================
 
-Metric                          Value
-------------------------------  ----------------
-Total rows                      32,255
-Distinct ISBNs                  31,546
-Missing ISBNs                   409
-
-Missing descriptions            13,775
-Missing subjects                4,011
-Missing publication years       169
-
-Earliest publication year       1847
-Latest publication year         2026
-Average publication year        2004.50
-
-Average description length      975 characters
-Maximum description length      20,629 characters
-
-Top subject domain              Computer Science
-Top subject count               4,465
-
+Metric                         | Value
+-------------------------------+----------------
+Total rows                     | 32,255
+Distinct ISBNs                 | 31,546
+Missing ISBNs                  | 409
+Missing descriptions           | 13,775
+Missing subjects               | 4,011
+Missing publication years      | 169
+Earliest publication year      | 1847
+Latest publication year        | 2026
+Average publication year       | 2004.50
+Average description length     | 975 characters
+Maximum description length     | 20,629 characters
+Top subject domain             | Computer Science
+Top subject count              | 4,465
 
 DATABASE SCHEMA (books table)
------------------------------
-row_id               INTEGER (Primary Key)
-isbn                 TEXT
-title                TEXT
-author               TEXT
-year                 INTEGER
-publisher             TEXT
-description           TEXT
-subjects              TEXT
-description_source    TEXT
-subjects_source       TEXT
+----------------------------
+
+Column Name          | Type
+---------------------+------------------------
+row_id               | INTEGER (Primary Key)
+isbn                 | TEXT
+title                | TEXT
+author               | TEXT
+year                 | INTEGER
+publisher            | TEXT
+description          | TEXT
+subjects             | TEXT
+description_source   | TEXT
+subjects_source      | TEXT
 
 
 DATA TRANSFORMATION LOGIC
