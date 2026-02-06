@@ -83,6 +83,7 @@ The pipeline is organized into four logical stages:
    - Execute semantic or hybrid search
    - Serve results via Streamlit web interface
 
+```
 PROJECT STRUCTURE
 -----------------
 book-finder/
@@ -147,7 +148,7 @@ book-finder/
 ├── run_all.sh
 ├── requirements.txt
 └── README.md
-
+```
 
 
 
@@ -328,7 +329,6 @@ DEPLOYMENT LIMITATIONS
 
 These constraints are acceptable for academic and demonstration use.
 
-==========================
 DATABASE OVERVIEW SUMMARY
 ==========================
 
