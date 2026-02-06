@@ -23,6 +23,7 @@ st.markdown(
     "The system will recommend relevant books using semantic similarity."
 )
 
+
 # -----------------------------
 # Load recommender ONCE
 # -----------------------------
@@ -31,6 +32,7 @@ def load_engine():
     rows = load_books_from_db()
     embeddings, row_ids = load_or_build_embeddings(rows)
     return SemanticSearchEngine(rows, embeddings, row_ids)
+
 
 engine = load_engine()
 
@@ -77,5 +79,9 @@ if st.button("Recommend"):
 
                     if r.get("description"):
                         st.markdown("**Description:**")
-                        st.write(r["description"])
-
+                        st.text_area(
+                            label="",
+                            value=r["description"],
+                            height=250,
+                            disabled=True,
+                        )

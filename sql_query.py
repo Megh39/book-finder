@@ -1,21 +1,21 @@
 import sqlite3
-
-DB_PATH = "books.db"   # same path you use everywhere
+from src.config import DB_PATH
 
 conn = sqlite3.connect(DB_PATH)
 cur = conn.cursor()
 
-query = """
-SELECT COUNT(*)
+cur.execute("""
+SELECT description, subjects
 FROM books
-WHERE lower(title) LIKE '%cyberpunk%'
-   OR lower(description) LIKE '%cyberpunk%'
-   OR lower(subjects) LIKE '%cyberpunk%';
-"""
+WHERE title LIKE "Mathematics for machine learning"
+LIMIT 5
+""")
 
-cur.execute(query)
-result = cur.fetchone()
-
-print("Result:", result)
+for d, s in cur.fetchall():
+    print("---- DESCRIPTION ----")
+    print(d[-300:])
+    print("---- SUBJECTS ----")
+    print(s)
+    print("\n")
 
 conn.close()

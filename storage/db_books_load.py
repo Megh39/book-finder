@@ -2,10 +2,10 @@ import sqlite3
 import pandas as pd
 import sys
 
-from src.config import DB_PATH, FINAL_MASTER_WITH_FINAL_TEXT_CSV
+from src.config import DB_PATH, FINAL_MASTER_DATASET_CSV_2
 
 DB_FILE = DB_PATH
-CSV_FILE = FINAL_MASTER_WITH_FINAL_TEXT_CSV
+CSV_FILE = FINAL_MASTER_DATASET_CSV_2
 
 df = pd.read_csv(CSV_FILE, engine="python", on_bad_lines="skip")
 
