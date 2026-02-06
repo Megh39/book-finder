@@ -5,6 +5,9 @@ BOOK FINDER – DATA ENGINEERING PIPELINE
 - Roll No: 202518018
 - Live Site Link: https://book-finder-dau.streamlit.app/
 
+![Streamlit Book Finder UI](assets/streamlit_app.png)
+Figure: Streamlit-based interface for semantic and hybrid book search.
+
 PROJECT OVERVIEW
 ----------------
 This project implements an end-to-end data engineering and retrieval system
@@ -316,6 +319,8 @@ PERFORMANCE CONSIDERATIONS
 DEPLOYMENT LIMITATIONS
 ---------------------
 
+- Backend was earlier deployed on Render, but due to RAM limitations on the free tier of Render, it was moved to
+  Streamlit Cloud.
 - CPU-only execution on Streamlit Cloud.
 - Cold starts may occur after inactivity.
 - SQLite is used for portability, not high concurrency.
