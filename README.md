@@ -83,9 +83,9 @@ The pipeline is organized into four logical stages:
    - Execute semantic or hybrid search
    - Serve results via Streamlit web interface
 
-```
 PROJECT STRUCTURE
 -----------------
+```
 book-finder/
 │
 ├── src/
