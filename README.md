@@ -83,7 +83,6 @@ The pipeline is organized into four logical stages:
    - Execute semantic or hybrid search
    - Serve results via Streamlit web interface
 
-
 PROJECT STRUCTURE
 -----------------
 book-finder/
@@ -147,8 +146,8 @@ book-finder/
 ├── run_all.ps1
 ├── run_all.sh
 ├── requirements.txt
-├── README.md
-└── todo.txt
+└── README.md
+
 
 
 
@@ -333,37 +332,37 @@ These constraints are acceptable for academic and demonstration use.
 DATABASE OVERVIEW SUMMARY
 ==========================
 
-Metric                         | Value
--------------------------------+----------------
-Total rows                     | 32,255
-Distinct ISBNs                 | 31,546
-Missing ISBNs                  | 409
-Missing descriptions           | 13,775
-Missing subjects               | 4,011
-Missing publication years      | 169
-Earliest publication year      | 1847
-Latest publication year        | 2026
-Average publication year       | 2004.50
-Average description length     | 975 characters
-Maximum description length     | 20,629 characters
-Top subject domain             | Computer Science
-Top subject count              | 4,465
+| Metric                        | Value              |
+|-------------------------------|--------------------|
+| Total rows                    | 32,255             |
+| Distinct ISBNs                | 31,546             |
+| Missing ISBNs                 | 409                |
+| Missing descriptions          | 13,775             |
+| Missing subjects              | 4,011              |
+| Missing publication years     | 169                |
+| Earliest publication year     | 1847               |
+| Latest publication year       | 2026               |
+| Average publication year      | 2004.50            |
+| Average description length    | 975 characters     |
+| Maximum description length    | 20,629 characters  |
+| Top subject domain            | Computer Science   |
+| Top subject count             | 4,465              |
 
 DATABASE SCHEMA (books table)
 ----------------------------
 
-Column Name          | Type
----------------------+------------------------
-row_id               | INTEGER (Primary Key)
-isbn                 | TEXT
-title                | TEXT
-author               | TEXT
-year                 | INTEGER
-publisher            | TEXT
-description          | TEXT
-subjects             | TEXT
-description_source   | TEXT
-subjects_source      | TEXT
+| Column Name          | Type                    |
+|----------------------|-------------------------|
+| row_id               | INTEGER (Primary Key)   |
+| isbn                 | TEXT                    |
+| title                | TEXT                    |
+| author               | TEXT                    |
+| year                 | INTEGER                 |
+| publisher            | TEXT                    |
+| description          | TEXT                    |
+| subjects             | TEXT                    |
+| description_source   | TEXT                    |
+| subjects_source      | TEXT                    |
 
 
 DATA TRANSFORMATION LOGIC
