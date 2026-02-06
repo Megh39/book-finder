@@ -120,33 +120,43 @@
 ---
 
 ## Q21
-**Question:** Other options than transformers?
-**Answer:** Other options exist such as Local LLMs. But they produce different results each time and hard to evaluate. Other text embedding options such as TF-IDF and word2vec exist but not too good for text matching, they work only for tokenization.
+Question: Other options than transformers?
+Answer: Other embedding options exist such as TF-IDF and word2vec, but they rely on token overlap or shallow semantics and perform poorly for natural language matching. Local LLMs can also be used to generate embeddings, but they are resource-heavy, less deterministic, and harder to evaluate consistently. Transformer-based sentence embeddings provide the best tradeoff between semantic quality, stability, and efficiency.
 
 ---
 
-## Q
-**Question:** 
-**Answer:** 
+## Q22
+Question: Why use BM25?
+Answer: BM25 is used to handle exact keyword and token-based matching efficiently. It performs well for short, specific, or technical queries where lexical overlap matters. In this system, BM25 is used to shortlist candidate documents before applying semantic reranking, improving both precision and performance.
 
 ---
-## Q
-**Question:** 
-**Answer:** 
+
+## Q23
+Question: What are the options to host the application?
+Answer: Common hosting options include Render, Vercel, Railway, and Streamlit Community Cloud. Each platform offers different tradeoffs in terms of resource limits, deployment complexity, and cost.
 
 ---
-## Q
-**Question:** 
-**Answer:** 
+
+## Q24
+Question: Why not use Render if it runs out of RAM?
+Answer: Render free tiers often have strict RAM limits, which are insufficient for loading embedding models and large NumPy arrays. Streamlit Community Cloud is better suited here because it hosts both the frontend and backend logic together and provides enough memory for embedding-based search workloads.
 
 ---
-## Q
-**Question:** 
-**Answer:** 
+
+## Q25
+Question: How does Streamlit help in this project?
+Answer: Streamlit simplifies deployment by combining UI rendering and backend execution in a single process. It removes the need for a separate frontend-backend architecture, supports caching of heavy objects like models and embeddings, and allows rapid deployment via GitHub integration.
 
 ---
-## Q
-**Question:** 
-**Answer:** 
+
+## Q26
+Question: Why precompute embeddings instead of generating them at query time?
+Answer: Precomputing embeddings avoids repeated encoding of the entire dataset, significantly reducing latency and compute cost. At query time, only the user query is embedded, making the system fast and scalable for read-heavy workloads.
+
+---
+
+## Q27
+Question: Why not directly use a database full-text search?
+Answer: Traditional database full-text search relies on lexical matching and cannot capture semantic similarity. Semantic embeddings allow retrieval based on meaning rather than exact word overlap, enabling natural language queries that traditional full-text search cannot handle.
 
 ---

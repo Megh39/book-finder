@@ -1,9 +1,9 @@
 BOOK FINDER – DATA ENGINEERING PIPELINE
 ======================================
 
-Name: Megh Nanavati
-Roll No: 202518018
-Live Site Link: https://book-finder-dau.streamlit.app/
+- Name: Megh Nanavati
+- Roll No: 202518018
+- Live Site Link: https://book-finder-dau.streamlit.app/
 
 PROJECT OVERVIEW
 ----------------
