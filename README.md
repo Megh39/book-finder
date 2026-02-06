@@ -330,7 +330,8 @@ DEPLOYMENT LIMITATIONS
 These constraints are acceptable for academic and demonstration use.
 
 DATABASE OVERVIEW SUMMARY
-==========================
+========================
+
 
 | Metric                        | Value              |
 |-------------------------------|--------------------|
